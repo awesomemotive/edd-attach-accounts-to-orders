@@ -20,12 +20,12 @@
  * @author              Chris Christoff
  */
 
-function aato_register_page() {
-	add_submenu_page( null, __( 'EDD Attach Accounts to Orders', 'edd_ead' ), __( 'EDD Attach Accounts to Orders', 'edd_ead' ), 'install_plugins', 'aato-attach', 'aato_attachment_screen' );
+function edd_aato_register_page() {
+	add_submenu_page( null, __( 'EDD Attach Accounts to Orders', 'edd_ead' ), __( 'EDD Attach Accounts to Orders', 'edd_ead' ), 'install_plugins', 'aato-attach', 'edd_aato_attachment_screen' );
 }
-add_action( 'admin_menu', 'aato_register_page', 10 );
+add_action( 'admin_menu', 'edd_aato_register_page', 10 );
 
-function aato_attachment_screen() {
+function edd_aato_attachment_screen() {
 	$step        = isset( $_GET['step'] )         ? absint( $_GET['step'] )         : 1;
 	$orders      = $step == 1                     ? 0                               : ($step - 1) * 10;
 	$fixed       = isset( $_GET['fixed'] )        ? absint( $_GET['fixed'] )        : 0;
@@ -54,7 +54,7 @@ function aato_attachment_screen() {
 }
 
 
-function attach_accounts_to_orders_notice() {
+function edd_attach_accounts_to_orders_notice() {
 	if ( ! ( isset( $_GET['page'] ) && $_GET['page'] == 'aato-attach' ) ) { 
 		printf(
 			 __( '<div class="updated"><p>' . __( 'Attach Accounts to Orders and ', 'edd_ead' ) .' <a href="%s"> make accounts </a> or ', 'edd_ead' ),
@@ -66,10 +66,10 @@ function attach_accounts_to_orders_notice() {
 		);
 	}
 }
-add_action( 'admin_notices', 'attach_accounts_to_orders_notice' );
+add_action( 'admin_notices', 'edd_attach_accounts_to_orders_notice' );
 
 
-function attach_accounts_to_orders() {
+function edd_attach_accounts_to_orders() {
 
 	ignore_user_abort( true );
 
@@ -120,16 +120,16 @@ function attach_accounts_to_orders() {
             
             // get the value of the user email
             $email = isset( $meta['_edd_payment_user_email'][0] ) ? $meta['_edd_payment_user_email'][0] : false;
-            if ( $email && aato_validate_email_address( $email ) ) {
+            if ( $email && edd_aato_validate_email_address( $email ) ) {
             	if ( get_user_by('email', $email) ){
             		// there is a user account for this person already
-            		aato_attach_existing_user( $id, $email );
+            		edd_aato_attach_existing_user( $id, $email );
             		$fixed++;
             	}
             	else{
             		// there is not a user account for this person already, and we can create users, let's attach them
             		if ( $create_users ){
-            			aato_attach_new_user( $id, $email );
+            			edd_aato_attach_new_user( $id, $email );
             			$created++;
             			$fixed++;
             		}
@@ -152,13 +152,13 @@ function attach_accounts_to_orders() {
 
 	} else {
 		// No more orders found, say we're done
-		add_action( 'admin_notices', 'aato_were_done_folks' );
+		add_action( 'admin_notices', 'edd_aato_were_done_folks' );
 	}
 
 }
-add_action( 'edd_attach_accounts_to_orders', 'attach_accounts_to_orders' );
+add_action( 'edd_attach_accounts_to_orders', 'edd_attach_accounts_to_orders' );
 
-function aato_attach_existing_user( $id, $email ){
+function edd_aato_attach_existing_user( $id, $email ){
     // user exists with that email
     $user = get_user_by('email', $email);
     
@@ -177,9 +177,9 @@ function aato_attach_existing_user( $id, $email ){
     update_post_meta($id, '_edd_payment_meta', $metaunser);
 }
 
-function aato_attach_new_user( $id, $email ){
+function edd_aato_attach_new_user( $id, $email ){
     // First we need a unique username
-    $username = aato_generate_username($email);
+    $username = edd_aato_generate_username($email);
     
     // Second we need a unique password
     $random_password = wp_generate_password($length = 12, $include_standard_special_chars = false);
@@ -188,14 +188,14 @@ function aato_attach_new_user( $id, $email ){
     $user = wp_create_user($username, $random_password, $email);
     
     // And then notify the user of their new account
-    $emailtouser = aato_new_user_notification($username, $random_password);
+    $emailtouser = edd_aato_new_user_notification($username, $random_password);
     
     // Now insert the correct data (since they now exist, call existing user function )
-    aato_attach_existing_user( $id, $email );
+    edd_aato_attach_existing_user( $id, $email );
 }
 
 // modified version of wp_new_user_notification that doesn't send the admin a notification ( so they don't get 5k emails running this plugin )
-function aato_new_user_notification($user_id, $plaintext_pass = '') {
+function edd_aato_new_user_notification($user_id, $plaintext_pass = '') {
     $user = get_userdata( $user_id );
 
     // The blogname option is escaped with esc_html on the way into the database in sanitize_option
@@ -205,16 +205,16 @@ function aato_new_user_notification($user_id, $plaintext_pass = '') {
     $message  = sprintf(__('Username: %s'), $user->user_login) . "\r\n";
     $message .= sprintf(__('Password: %s'), $plaintext_pass) . "\r\n";
     $message .= wp_login_url() . "\r\n";
-    $message = apply_filters( 'aato_new_user_notification_message', $message, $user_id, $plaintext_pass, $user );
+    $message = apply_filters( 'edd_aato_new_user_notification_message', $message, $user_id, $plaintext_pass, $user );
 
     wp_mail($user->user_email, sprintf(__('[%s] Your username and password'), $blogname), $message);
 }
 
-function aato_were_done_folks() {
+function edd_aato_were_done_folks() {
 	echo '<div class="updated"><p>' . __( 'All done attaching accounts to orders! You should deactive this plugin now', 'edd_ead' ) . '</p></div>';
 }
 
-function aato_validate_email_address( $email ) {
+function edd_aato_validate_email_address( $email ) {
     
     //Perform a basic syntax-Check
     //If this check fails, there's no need to continue
@@ -232,7 +232,7 @@ function aato_validate_email_address( $email ) {
     return true;
 }
 
-function aato_generate_username( $email ) {
+function edd_aato_generate_username( $email ) {
     
     // Lets remove everything after the @
     // Example: chriscct7@some_email.com becomes chriscct7
