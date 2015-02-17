@@ -153,8 +153,8 @@ function attach_accounts_to_orders() {
 
 	} else {
 		// No more orders found, go to plugins page, and deactivate
-
-		wp_redirect( admin_url( 'admin.php?page=fes-about' ) ); exit;
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+		wp_redirect( admin_url( 'plugins.php' ) ); exit;
 	}
 
 }
