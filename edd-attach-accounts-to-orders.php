@@ -27,13 +27,13 @@ add_action( 'admin_menu', 'edd_aato_register_page', 10 );
 
 function edd_aato_attachment_screen() {
 	$step        = isset( $_GET['step'] )         ? absint( $_GET['step'] )         : 1;
-	$orders      = $step == 1                     ? 0                               : ($step - 1) * 10;
+	$orders      = $step == 1                     ? 0                               : ($step - 1) * 25;
 	$fixed       = isset( $_GET['fixed'] )        ? absint( $_GET['fixed'] )        : 0;
 	$create      = isset( $_GET['create_users'] ) ? absint( $_GET['create_users'] ) : 0;
 	$created     = isset( $_GET['created'] )      ? absint( $_GET['created'] )      : 0;
 	$counts      = wp_count_posts( 'edd_payment' );
 	$total       = isset( $counts->publish )      ? $counts->publish                : 1;
-	$total_steps = round( ( $total / 10 ), 0 );
+	$total_steps = round( ( $total / 25 ), 0 );
 	?>
 	<div class="wrap">
 		<h2><?php _e( 'EDD Attach Accounts to Orders', 'edd_ead' ); ?></h2>
