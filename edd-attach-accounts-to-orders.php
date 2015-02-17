@@ -30,6 +30,7 @@ add_action( 'admin_menu', 'aato_register_page', 10 );
 
 function aato_attachment_screen() {
 	$step        = isset( $_GET['step'] )         ? absint( $_GET['step'] )         : 1;
+	$orders      = $step == 1                     ? 0                               : ($step - 1) * 10;
 	$fixed       = isset( $_GET['fixed'] )        ? absint( $_GET['fixed'] )        : 0;
 	$create      = isset( $_GET['create_users'] ) ? absint( $_GET['create_users'] ) : 0;
 	$created     = isset( $_GET['created'] )      ? absint( $_GET['created'] )      : 0;
@@ -42,6 +43,7 @@ function aato_attachment_screen() {
 		<div id="edd-upgrade-status">
 			<p><?php _e( 'The attachent process is running, please be patient. This could take several minutes to complete.', 'edd_ead' ); ?></p>
 			<p><strong><?php printf( __( 'Step %d of approximately %d running', 'edd_ead' ), $step, $total_steps ); ?></p>
+			<p><strong><?php printf( __( '%d orders analyzed', 'edd_ead' ), $fixed ); ?></p>
 			<p><strong><?php printf( __( '%d accounts attached to orders so far', 'edd_ead' ), $fixed ); ?></p>
 			<?php if ( $create ){ ?> 
 			<p><strong><?php printf( __( '%d accounts created so far', 'edd_ead' ), $created ); ?></p>
