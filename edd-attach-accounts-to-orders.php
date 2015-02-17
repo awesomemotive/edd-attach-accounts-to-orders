@@ -20,8 +20,6 @@
  * @author              Chris Christoff
  */
 
-// todo: Suppress emails on setups where admin emailed on new user creation
-
 function aato_register_page() {
 	add_submenu_page( null, __( 'EDD Attach Accounts to Orders', 'edd_ead' ), __( 'EDD Attach Accounts to Orders', 'edd_ead' ), 'install_plugins', 'aato-attach', 'aato_attachment_screen' );
 }
@@ -190,10 +188,26 @@ function aato_attach_new_user( $id, $email ){
     $user = wp_create_user($username, $random_password, $email);
     
     // And then notify the user of their new account
-    $emailtouser = wp_new_user_notification($username, $random_password);
+    $emailtouser = aato_new_user_notification($username, $random_password);
     
     // Now insert the correct data (since they now exist, call existing user function )
     aato_attach_existing_user( $id, $email );
+}
+
+// modified version of wp_new_user_notification that doesn't send the admin a notification ( so they don't get 5k emails running this plugin )
+function aato_new_user_notification($user_id, $plaintext_pass = '') {
+    $user = get_userdata( $user_id );
+
+    // The blogname option is escaped with esc_html on the way into the database in sanitize_option
+    // we want to reverse this for the plain text arena of emails.
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+
+    $message  = sprintf(__('Username: %s'), $user->user_login) . "\r\n";
+    $message .= sprintf(__('Password: %s'), $plaintext_pass) . "\r\n";
+    $message .= wp_login_url() . "\r\n";
+    $message = apply_filters( 'aato_new_user_notification_message', $message, $user_id, $plaintext_pass, $user );
+
+    wp_mail($user->user_email, sprintf(__('[%s] Your username and password'), $blogname), $message);
 }
 
 function aato_were_done_folks() {
