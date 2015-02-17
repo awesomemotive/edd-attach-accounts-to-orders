@@ -48,7 +48,7 @@ function aato_attachment_screen() {
 			<?php } ?>
 		</div>
 		<script type="text/javascript">
-			document.location.href = "index.php?edd_action=<?php echo $_GET['aato_page']; ?>&step=<?php echo absint( $_GET['step'] ); ?>&fixed=<?php echo absint( $_GET['fixed'] ); ?>&create_users=<?php echo absint( $_GET['create_users'] ); ?>&created=<?php echo absint( $_GET['created'] ); ?>";
+			document.location.href = "index.php?page=aato-attach&edd_action=<?php echo $_GET['aato_page']; ?>&step=<?php echo absint( $_GET['step'] ); ?>&fixed=<?php echo absint( $_GET['fixed'] ); ?>&create_users=<?php echo absint( $_GET['create_users'] ); ?>&created=<?php echo absint( $_GET['created'] ); ?>";
 		</script>
 	</div>
 <?php	
@@ -56,14 +56,14 @@ function aato_attachment_screen() {
 
 
 function attach_accounts_to_orders_notice() {
-	if ( ! isset( $_GET['edd_upgrade'] ) ) { 
+	if ( ! ( isset( $_GET['page'] ) && $_GET['page'] == 'aato-attach' ) ) { 
 		printf(
-			 __( '<div class="updated"><p>' . __( 'Attach Accounts to Orders and ', 'edd_ead' ) .' <a href="%s">make accounts</a> or ', 'edd_ead' ),
-			esc_url( add_query_arg( array( 'edd_action' => 'attach_accounts_to_orders', 'create_users' => '1' ), admin_url() ) )
+			 __( '<div class="updated"><p>' . __( 'Attach Accounts to Orders and ', 'edd_ead' ) .' <a href="%s"> make accounts </a> or ', 'edd_ead' ),
+			esc_url( add_query_arg( array( 'page' => 'aato-attach', 'edd_action' => 'attach_accounts_to_orders', 'create_users' => '1' ), admin_url() ) )
 		);
 		printf(
-			 __( ' <a href="%s">do not make accounts</a> when the user doesn\'t have an account already. ' . '</p></div>', 'edd_ead' ),
-			esc_url( add_query_arg( array( 'edd_action' => 'attach_accounts_to_orders', 'create_users' => '0' ), admin_url() ) )
+			 __( ' <a href="%s"> do not make accounts </a> when the user doesn\'t have an account already. ' . '</p></div>', 'edd_ead' ),
+			esc_url( add_query_arg( array( 'page' => 'aato-attach', 'edd_action' => 'attach_accounts_to_orders', 'create_users' => '0' ), admin_url() ) )
 		);
 	}
 }
@@ -152,13 +152,12 @@ function attach_accounts_to_orders() {
 		wp_redirect( $redirect ); exit;
 
 	} else {
-		// No more orders found, go to plugins page, and deactivate
-		deactivate_plugins( plugin_basename( __FILE__ ) );
-		wp_redirect( admin_url( 'plugins.php' ) ); exit;
+		// No more orders found, say we're done
+		add_action( 'admin_notices', 'aato_were_done_folks' );
 	}
 
 }
-add_action( 'aato_page_vendor_permissions', 'attach_accounts_to_orders' );
+add_action( 'edd_attach_accounts_to_orders', 'attach_accounts_to_orders' );
 
 function aato_attach_existing_user( $id, $email ){
     // user exists with that email
@@ -206,6 +205,10 @@ function aato_attach_new_user( $id, $email ){
     $metasecondid = serialize($metasecondid);
     $metaunser['user_info'] = $metasecondid;
     update_post_meta($id, '_edd_payment_meta', $metaunser);
+}
+
+function aato_were_done_folks() {
+	echo '<div class="updated"><p>' . __( 'All done attaching accounts to orders! You should deactive this plugin now', 'edd_ead' ) . '</p></div>';
 }
 
 function aato_validate_email_address( $email ) {
