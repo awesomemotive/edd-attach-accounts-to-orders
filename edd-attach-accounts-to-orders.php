@@ -41,7 +41,7 @@ function aato_attachment_screen() {
 	<div class="wrap">
 		<h2><?php _e( 'EDD Attach Accounts to Orders', 'edd_ead' ); ?></h2>
 		<div id="edd-upgrade-status">
-			<p><?php _e( 'The attachent process is running, please be patient. This could take several minutes to complete.', 'edd_ead' ); ?></p>
+			<p><?php _e( 'The account to order attachment process is running, please be patient. This could take several minutes to complete.', 'edd_ead' ); ?></p>
 			<p><strong><?php printf( __( 'Step %d of approximately %d running', 'edd_ead' ), $step, $total_steps ); ?></p>
 			<p><strong><?php printf( __( '%d orders analyzed', 'edd_ead' ), $orders ); ?></p>
 			<p><strong><?php printf( __( '%d accounts attached to orders so far', 'edd_ead' ), $fixed ); ?></p>
