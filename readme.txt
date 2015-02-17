@@ -39,6 +39,7 @@ Haven't had any yet
 = 2.0 =
 * New UI
 * Starts prep work for using the new Customer API in EDD
+* New custom user created email function so admins no longer get an email for each account created!
 
 = 1.0 =
 * Initial Release
@@ -47,6 +48,7 @@ Haven't had any yet
 = 2.0 =
 * New UI
 * Starts prep work for using the new Customer API in EDD
+* New custom user created email function so admins no longer get an email for each account created!
 
 = 1.0 =
 * Initial Release
