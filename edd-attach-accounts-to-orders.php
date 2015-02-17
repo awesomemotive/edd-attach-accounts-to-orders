@@ -193,20 +193,8 @@ function aato_attach_new_user( $id, $email ){
     // And then notify the user of their new account
     $emailtouser = wp_new_user_notification($username, $random_password);
     
-    // Now insert the correct data
-    $user = get_user_by('email', $email);
-    update_post_meta($id, '_edd_payment_user_id', "$user->ID");
-    $metaunser = unserialize($meta['_edd_payment_meta'][0]);
-    $metaunser['user_id'] = $user->ID;
-
-     //set uid in order to id
-    $metasecondid = unserialize($metaunser['user_info']);
-    $metasecondid['id'] = $user->ID;
-
-     //set uid in order to id
-    $metasecondid = serialize($metasecondid);
-    $metaunser['user_info'] = $metasecondid;
-    update_post_meta($id, '_edd_payment_meta', $metaunser);
+    // Now insert the correct data (since they now exist, call existing user function )
+    aato_attach_existing_user( $id, $email );
 }
 
 function aato_were_done_folks() {
