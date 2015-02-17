@@ -47,7 +47,7 @@ function edd_aato_attachment_screen() {
 			<?php } ?>
 		</div>
 		<script type="text/javascript">
-			document.location.href = "index.php?page=aato-attach&edd_action=<?php echo $_GET['aato_page']; ?>&step=<?php echo absint( $_GET['step'] ); ?>&fixed=<?php echo absint( $_GET['fixed'] ); ?>&create_users=<?php echo absint( $_GET['create_users'] ); ?>&created=<?php echo absint( $_GET['created'] ); ?>";
+			document.location.href = "index.php?page=aato-attach&edd_action=attach_accounts_to_orders&step=<?php echo absint( $_GET['step'] ); ?>&fixed=<?php echo absint( $_GET['fixed'] ); ?>&create_users=<?php echo absint( $_GET['create_users'] ); ?>&created=<?php echo absint( $_GET['created'] ); ?>";
 		</script>
 	</div>
 <?php	
@@ -78,7 +78,7 @@ function edd_attach_accounts_to_orders() {
 	}
 
 	$step     = isset( $_GET['step'] )         ? absint( $_GET['step'] )         : 1;
-	$offset   = $step == 1                     ? 0                               : $step * 10;
+	$offset   = $step == 1                     ? 0                               : ( $step - 1 ) * 25;
 	$fixed    = isset( $_GET['fixed'] )        ? absint( $_GET['fixed'] )        : 0;
 	$create   = isset( $_GET['create_users'] ) ? absint( $_GET['create_users'] ) : 0;
 	$created  = isset( $_GET['created'] )      ? absint( $_GET['created'] )      : 0;
@@ -86,7 +86,7 @@ function edd_attach_accounts_to_orders() {
     $posts = new WP_Query(
     			array(
     				'post_type' => 'edd_payment',
-					'posts_per_page' => '10',
+					'posts_per_page' => '25',
 					'post_status' => 'publish',
 					'meta_query' => array(
 				        'relation' => 'OR',
@@ -153,6 +153,7 @@ function edd_attach_accounts_to_orders() {
 	} else {
 		// No more orders found, say we're done
 		add_action( 'admin_notices', 'edd_aato_were_done_folks' );
+		wp_redirect( admin_url( 'index.php' ) ); exit;
 	}
 
 }
