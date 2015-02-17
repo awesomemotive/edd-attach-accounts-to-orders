@@ -1,13 +1,12 @@
 === Easy Digital Downloads Attach Accounts to Orders ===
 Contributors: chriscct7
-Requires at least: 3.4.2
-Tested up to: 3.6 Beta 3
+Requires at least: 3.9
+Tested up to: 4.3
 Contributors: chriscct7
 Donate link: http://donate.chriscct7.com/
 Tags: easy digital downloads, edd, edd accounts, edd orders
-Requires at least: 3.4.2
-Tested up to: 3.6 Beta 3
-Stable tag: 1.0
+Requires at least: 3.9
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,9 +36,17 @@ If you'd like to help, feel free to contribute at the [GitHub Repo](https://gith
 Haven't had any yet
 
 == Changelog ==
-= 1.0.0 =
+= 2.0 =
+* New UI
+* Starts prep work for using the new Customer API in EDD
+
+= 1.0 =
 * Initial Release
 
 == Upgrade Notice ==
-= 1.0.0 =
+= 2.0 =
+* New UI
+* Starts prep work for using the new Customer API in EDD
+
+= 1.0 =
 * Initial Release

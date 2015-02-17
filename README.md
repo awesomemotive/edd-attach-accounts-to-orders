@@ -1,6 +1,6 @@
 # Easy Digital Downloads Attach Accounts To Orders #
 
-Current Version: 1.0
+Current Version: 2.0
 
 Yet another awesome plugin by [Chris Christoff](http://www.chriscct7.com)
 
@@ -10,5 +10,9 @@ Attach users to orders! Take guest purchases and attach them to existing account
 
 
 ### Changelog ###
-= 1.0.0 =
+= 2.0 =
+* New UI
+* Starts prep work for using the new Customer API in EDD
+
+= 1.0 =
 * Initial Release
