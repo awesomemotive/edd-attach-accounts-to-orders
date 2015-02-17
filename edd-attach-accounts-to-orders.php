@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name:         Easy Digital Downloads Attach Accounts to Orders
  * Plugin URI:          http://www.chriscct7.com
