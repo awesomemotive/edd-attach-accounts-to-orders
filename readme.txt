@@ -6,7 +6,7 @@ Contributors: chriscct7
 Donate link: http://donate.chriscct7.com/
 Tags: easy digital downloads, edd, edd accounts, edd orders
 Requires at least: 3.9
-Stable tag: 1.1
+Stable tag: 2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
