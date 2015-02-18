@@ -55,7 +55,7 @@ function edd_aato_attachment_screen() {
 
 
 function edd_attach_accounts_to_orders_notice() {
-	if ( ! ( isset( $_GET['page'] ) && $_GET['page'] == 'aato-attach' ) ) { 
+	if ( ! ( isset( $_GET['page'] ) && $_GET['page'] == 'aato-attach' ) && ! ( isset( $_GET['aato'] ) && $_GET['aato'] == 'done' ) ) { 
 		printf(
 			 __( '<div class="updated"><p>' . __( 'Attach Accounts to Orders and ', 'edd_ead' ) .' <a href="%s"> make accounts </a> or ', 'edd_ead' ),
 			esc_url( add_query_arg( array( 'page' => 'aato-attach', 'edd_action' => 'attach_accounts_to_orders', 'create_users' => '1' ), admin_url() ) )
@@ -64,6 +64,9 @@ function edd_attach_accounts_to_orders_notice() {
 			 __( ' <a href="%s"> do not make accounts </a> when the user doesn\'t have an account already. ' . '</p></div>', 'edd_ead' ),
 			esc_url( add_query_arg( array( 'page' => 'aato-attach', 'edd_action' => 'attach_accounts_to_orders', 'create_users' => '0' ), admin_url() ) )
 		);
+	}
+	if ( ( isset( $_GET['aato'] ) && $_GET['aato'] == 'done' ) ){
+		echo '<div class="updated"><p>' . __( 'All done attaching accounts to orders! You should deactivate this plugin now', 'edd_ead' ) . '</p></div>';
 	}
 }
 add_action( 'admin_notices', 'edd_attach_accounts_to_orders_notice' );
@@ -153,7 +156,7 @@ function edd_attach_accounts_to_orders() {
 	} else {
 		// No more orders found, say we're done
 		add_action( 'admin_notices', 'edd_aato_were_done_folks' );
-		wp_redirect( admin_url( 'index.php' ) ); exit;
+		wp_redirect( admin_url( 'plugins.php?aato=done' ) ); exit;
 	}
 
 }
@@ -209,10 +212,6 @@ function edd_aato_new_user_notification($user_id, $plaintext_pass = '') {
     $message = apply_filters( 'edd_aato_new_user_notification_message', $message, $user_id, $plaintext_pass, $user );
 
     wp_mail($user->user_email, sprintf(__('[%s] Your username and password'), $blogname), $message);
-}
-
-function edd_aato_were_done_folks() {
-	echo '<div class="updated"><p>' . __( 'All done attaching accounts to orders! You should deactive this plugin now', 'edd_ead' ) . '</p></div>';
 }
 
 function edd_aato_validate_email_address( $email ) {
