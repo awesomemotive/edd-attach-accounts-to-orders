@@ -10,7 +10,7 @@
  *
  * Version:             2.0
  * Requires at least:   3.9
- * Tested up to:        4.2
+ * Tested up to:        4.3
  *
  * Text Domain:         edd_ead
  * Domain Path:         /languages/
