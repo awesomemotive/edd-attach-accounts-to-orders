@@ -8,9 +8,9 @@
  *
  * Contributors:        chriscct7
  *
- * Version:             2.0
+ * Version:             2.0.1
  * Requires at least:   3.9
- * Tested up to:        4.3
+ * Tested up to:        4.2
  *
  * Text Domain:         edd_ead
  * Domain Path:         /languages/

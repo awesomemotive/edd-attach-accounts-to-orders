@@ -6,7 +6,7 @@ Contributors: chriscct7
 Donate link: http://donate.chriscct7.com/
 Tags: easy digital downloads, edd, edd accounts, edd orders
 Requires at least: 3.9
-Stable tag: 2.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,9 @@ If you'd like to help, feel free to contribute at the [GitHub Repo](https://gith
 Haven't had any yet
 
 == Changelog ==
+= 2.0.1 =
+* Tags release to force updates to 2.0
+
 = 2.0 =
 * New UI
 * Starts prep work for using the new Customer API in EDD
@@ -45,6 +48,9 @@ Haven't had any yet
 * Initial Release
 
 == Upgrade Notice ==
+= 2.0.1 =
+* Tags release to force updates to 2.0
+
 = 2.0 =
 * New UI
 * Starts prep work for using the new Customer API in EDD
