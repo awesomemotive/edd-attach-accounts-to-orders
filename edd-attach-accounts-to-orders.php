@@ -8,7 +8,7 @@
  *
  * Contributors:        chriscct7
  *
- * Version:             2.0.1
+ * Version:             2.0.2
  * Requires at least:   3.9
  * Tested up to:        4.2
  *
@@ -16,7 +16,7 @@
  * Domain Path:         /languages/
  *
  * @category            Plugin
- * @copyright           Copyright © 2015 Chris Christoff
+ * @copyright           Copyright Â© 2015 Chris Christoff
  * @author              Chris Christoff
  */
 
@@ -42,7 +42,7 @@ function edd_aato_attachment_screen() {
 			<p><strong><?php printf( __( 'Step %d of approximately %d running', 'edd_ead' ), $step, $total_steps ); ?></p>
 			<p><strong><?php printf( __( '%d orders analyzed', 'edd_ead' ), $orders ); ?></p>
 			<p><strong><?php printf( __( '%d accounts attached to orders so far', 'edd_ead' ), $fixed ); ?></p>
-			<?php if ( $create ){ ?> 
+			<?php if ( $create ){ ?>
 			<p><strong><?php printf( __( '%d accounts created so far', 'edd_ead' ), $created ); ?></p>
 			<?php } ?>
 		</div>
@@ -50,12 +50,12 @@ function edd_aato_attachment_screen() {
 			document.location.href = "index.php?page=aato-attach&edd_action=attach_accounts_to_orders&step=<?php echo absint( $_GET['step'] ); ?>&fixed=<?php echo absint( $_GET['fixed'] ); ?>&create_users=<?php echo absint( $_GET['create_users'] ); ?>&created=<?php echo absint( $_GET['created'] ); ?>";
 		</script>
 	</div>
-<?php	
+<?php
 }
 
 
 function edd_attach_accounts_to_orders_notice() {
-	if ( ! ( isset( $_GET['page'] ) && $_GET['page'] == 'aato-attach' ) && ! ( isset( $_GET['aato'] ) && $_GET['aato'] == 'done' ) ) { 
+	if ( ! ( isset( $_GET['page'] ) && $_GET['page'] == 'aato-attach' ) && ! ( isset( $_GET['aato'] ) && $_GET['aato'] == 'done' ) ) {
 		printf(
 			 __( '<div class="updated"><p>' . __( 'Attach Accounts to Orders and ', 'edd_ead' ) .' <a href="%s"> make accounts </a> or ', 'edd_ead' ),
 			esc_url( add_query_arg( array( 'page' => 'aato-attach', 'edd_action' => 'attach_accounts_to_orders', 'create_users' => '1' ), admin_url() ) )
@@ -120,7 +120,7 @@ function edd_attach_accounts_to_orders() {
 		foreach( $posts as $id ) {
 			// do the upgrade routine
 			$meta = get_post_meta($id);
-            
+
             // get the value of the user email
             $email = isset( $meta['_edd_payment_user_email'][0] ) ? $meta['_edd_payment_user_email'][0] : false;
             if ( $email && edd_aato_validate_email_address( $email ) ) {
@@ -151,7 +151,7 @@ function edd_attach_accounts_to_orders() {
 			'create_users' => $create,
 			'created'      => $created,
 		), admin_url( 'index.php' ) );
-		wp_redirect( $redirect ); exit;
+		wp_safe_redirect( $redirect ); exit;
 
 	} else {
 		// No more orders found, say we're done
@@ -165,7 +165,7 @@ add_action( 'edd_attach_accounts_to_orders', 'edd_attach_accounts_to_orders' );
 function edd_aato_attach_existing_user( $id, $email ){
     // user exists with that email
     $user = get_user_by('email', $email);
-    
+
     // add correct id to order
     update_post_meta($id, '_edd_payment_user_id', $user->ID);
     $metaunser = unserialize($meta['_edd_payment_meta'][0]);
@@ -184,16 +184,16 @@ function edd_aato_attach_existing_user( $id, $email ){
 function edd_aato_attach_new_user( $id, $email ){
     // First we need a unique username
     $username = edd_aato_generate_username($email);
-    
+
     // Second we need a unique password
     $random_password = wp_generate_password($length = 12, $include_standard_special_chars = false);
-    
+
     // Then create user:
     $user = wp_create_user($username, $random_password, $email);
-    
+
     // And then notify the user of their new account
     $emailtouser = edd_aato_new_user_notification($username, $random_password);
-    
+
     // Now insert the correct data (since they now exist, call existing user function )
     edd_aato_attach_existing_user( $id, $email );
 }
@@ -215,16 +215,16 @@ function edd_aato_new_user_notification($user_id, $plaintext_pass = '') {
 }
 
 function edd_aato_validate_email_address( $email ) {
-    
+
     //Perform a basic syntax-Check
     //If this check fails, there's no need to continue
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return false;
     }
-    
+
     //extract host
     list($user, $host) = explode("@", $email);
-    
+
     //check, if host is accessible
     if (!checkdnsrr($host, "MX") && !checkdnsrr($host, "A")) {
         return false;
@@ -233,7 +233,7 @@ function edd_aato_validate_email_address( $email ) {
 }
 
 function edd_aato_generate_username( $email ) {
-    
+
     // Lets remove everything after the @
     // Example: chriscct7@some_email.com becomes chriscct7
     $username = array_shift(explode('@', $email));
@@ -242,7 +242,7 @@ function edd_aato_generate_username( $email ) {
         return $username;
     }
     $counter = 1;
-    
+
     // We need a copy of the username so that the username doesn't become:
     // username123456789101112.....
     $copy = $username;
