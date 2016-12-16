@@ -131,7 +131,7 @@ function edd_attach_accounts_to_orders() {
             	}
             	else{
             		// there is not a user account for this person already, and we can create users, let's attach them
-            		if ( $create_users ){
+		            if ( $create ) {
             			edd_aato_attach_new_user( $id, $email );
             			$created++;
             			$fixed++;
